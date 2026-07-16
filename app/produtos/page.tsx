@@ -10,7 +10,7 @@ export const metadata = {
 }
 
 export default async function ProdutosPage() {
-  const serializedProducts = (await applyOverlay(products)).map((product) => ({
+  const serializedProducts = (await applyOverlay(products.filter((p) => !p.isTest))).map((product) => ({
     id: product.id,
     name: product.name,
     price: product.price,

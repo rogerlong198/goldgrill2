@@ -106,7 +106,7 @@ export const products: Product[] = [
   },
   {
     "id": 7,
-    "name": "Churrasqueira a gás DXX Unique 301",
+    "name": "Churrasqueira a gás Unique 301",
     "price": 1936,
     "compareAtPrice": 9680,
     "image": "/images/produtos/churrasqueira-a-gas-master-dxx301-3.png",
@@ -114,13 +114,13 @@ export const products: Product[] = [
     "reviews": 262,
     "category": "Churrasqueiras a Gás",
     "slug": "churrasqueira-a-gas-dxx-unique-301",
-    "description": "Churrasqueira a gás DXX Unique 301 — produto da linha Churrasqueiras a Gás da nossa loja. Qualidade premium, acabamento em inox e a durabilidade que o seu churrasco merece. Entrega para todo o Brasil.",
+    "description": "Churrasqueira a gás Gold Grill Unique 301 — produto da linha Churrasqueiras a Gás da nossa loja. Qualidade premium, acabamento em inox e a durabilidade que o seu churrasco merece. Entrega para todo o Brasil.",
     "isTest": false,
     "tags": []
   },
   {
     "id": 8,
-    "name": "Churrasqueira a gás DXX Unique 300",
+    "name": "Churrasqueira a gás Unique 300",
     "price": 1562,
     "compareAtPrice": 7810,
     "image": "/images/produtos/churrasqueira-a-gas-compact-dxx300-3.png",
@@ -128,13 +128,13 @@ export const products: Product[] = [
     "reviews": 299,
     "category": "Churrasqueiras a Gás",
     "slug": "churrasqueira-a-gas-dxx-unique-300",
-    "description": "Churrasqueira a gás DXX Unique 300 — produto da linha Churrasqueiras a Gás da nossa loja. Qualidade premium, acabamento em inox e a durabilidade que o seu churrasco merece. Entrega para todo o Brasil.",
+    "description": "Churrasqueira a gás Gold Grill Unique 300 — produto da linha Churrasqueiras a Gás da nossa loja. Qualidade premium, acabamento em inox e a durabilidade que o seu churrasco merece. Entrega para todo o Brasil.",
     "isTest": false,
     "tags": []
   },
   {
     "id": 9,
-    "name": "Churrasqueira a gás DXX Unique 201",
+    "name": "Churrasqueira a gás Unique 201",
     "price": 1188,
     "compareAtPrice": 5940,
     "image": "/images/produtos/churrasqueira-a-gas-dxx-unique-201.png",
@@ -142,13 +142,13 @@ export const products: Product[] = [
     "reviews": 76,
     "category": "Churrasqueiras a Gás",
     "slug": "churrasqueira-a-gas-dxx-unique-201",
-    "description": "Churrasqueira a gás DXX Unique 201 — produto da linha Churrasqueiras a Gás da nossa loja. Qualidade premium, acabamento em inox e a durabilidade que o seu churrasco merece. Entrega para todo o Brasil.",
+    "description": "Churrasqueira a gás Gold Grill Unique 201 — produto da linha Churrasqueiras a Gás da nossa loja. Qualidade premium, acabamento em inox e a durabilidade que o seu churrasco merece. Entrega para todo o Brasil.",
     "isTest": false,
     "tags": []
   },
   {
     "id": 10,
-    "name": "Churrasqueira a gás DXX Classic 301",
+    "name": "Churrasqueira a gás Classic 301",
     "price": 1826,
     "compareAtPrice": 9130,
     "image": "/images/produtos/churrasqueira-a-gas-master-dxx301-2.png",
@@ -156,13 +156,13 @@ export const products: Product[] = [
     "reviews": 113,
     "category": "Churrasqueiras a Gás",
     "slug": "churrasqueira-a-gas-dxx-classic-301",
-    "description": "Churrasqueira a gás DXX Classic 301 — produto da linha Churrasqueiras a Gás da nossa loja. Qualidade premium, acabamento em inox e a durabilidade que o seu churrasco merece. Entrega para todo o Brasil.",
+    "description": "Churrasqueira a gás Gold Grill Classic 301 — produto da linha Churrasqueiras a Gás da nossa loja. Qualidade premium, acabamento em inox e a durabilidade que o seu churrasco merece. Entrega para todo o Brasil.",
     "isTest": false,
     "tags": []
   },
   {
     "id": 11,
-    "name": "Churrasqueira a gás DXX Classic 300",
+    "name": "Churrasqueira a gás Classic 300",
     "price": 1298,
     "compareAtPrice": 6490,
     "image": "/images/produtos/churrasqueira-a-gas-compact-dxx300-2.png",
@@ -170,13 +170,13 @@ export const products: Product[] = [
     "reviews": 150,
     "category": "Churrasqueiras a Gás",
     "slug": "churrasqueira-a-gas-dxx-classic-300",
-    "description": "Churrasqueira a gás DXX Classic 300 — produto da linha Churrasqueiras a Gás da nossa loja. Qualidade premium, acabamento em inox e a durabilidade que o seu churrasco merece. Entrega para todo o Brasil.",
+    "description": "Churrasqueira a gás Gold Grill Classic 300 — produto da linha Churrasqueiras a Gás da nossa loja. Qualidade premium, acabamento em inox e a durabilidade que o seu churrasco merece. Entrega para todo o Brasil.",
     "isTest": false,
     "tags": []
   },
   {
     "id": 12,
-    "name": "Churrasqueira a gás DXX Classic 201",
+    "name": "Churrasqueira a gás Classic 201",
     "price": 1122,
     "compareAtPrice": 5610,
     "image": "/images/produtos/churrasqueira-a-gas-slim-dxx201-2.png",
@@ -184,7 +184,7 @@ export const products: Product[] = [
     "reviews": 187,
     "category": "Churrasqueiras a Gás",
     "slug": "churrasqueira-a-gas-dxx-classic-201",
-    "description": "Churrasqueira a gás DXX Classic 201 — produto da linha Churrasqueiras a Gás da nossa loja. Qualidade premium, acabamento em inox e a durabilidade que o seu churrasco merece. Entrega para todo o Brasil.",
+    "description": "Churrasqueira a gás Gold Grill Classic 201 — produto da linha Churrasqueiras a Gás da nossa loja. Qualidade premium, acabamento em inox e a durabilidade que o seu churrasco merece. Entrega para todo o Brasil.",
     "isTest": false,
     "tags": []
   },
@@ -456,7 +456,7 @@ export const products: Product[] = [
   },
   {
     "id": 32,
-    "name": "Tampa De Acabamento DXX",
+    "name": "Tampa De Acabamento",
     "price": 158.4,
     "compareAtPrice": 792,
     "image": "/images/produtos/tampa-de-acabamento-dxx.png",
@@ -464,7 +464,7 @@ export const products: Product[] = [
     "reviews": 147,
     "category": "Acessórios de Churrasco",
     "slug": "tampa-de-acabamento-dxx",
-    "description": "Tampa De Acabamento DXX — produto da linha Acessórios da nossa loja. Qualidade premium, acabamento em inox e a durabilidade que o seu churrasco merece. Entrega para todo o Brasil.",
+    "description": "Tampa De Acabamento Gold Grill — produto da linha Acessórios da nossa loja. Qualidade premium, acabamento em inox e a durabilidade que o seu churrasco merece. Entrega para todo o Brasil.",
     "isTest": false,
     "tags": []
   },
@@ -3231,9 +3231,10 @@ function _slug(s: string): string {
   return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 export function getProductBySlug(slug: string): Product | undefined { return products.find((p) => p.slug === slug); }
-export function getProductsByCategory(category: string): Product[] { return products.filter((p) => p.category === category || _slug(p.category) === _slug(category)); }
+// Listagens escondem produtos de teste (só aparecem na busca e por URL direta).
+export function getProductsByCategory(category: string): Product[] { return products.filter((p) => !p.isTest && (p.category === category || _slug(p.category) === _slug(category))); }
 export function getCollectionBySlug(slug: string): Collection | undefined { return collections.find((c) => c.slug === slug || _slug(c.name) === _slug(slug)); }
-export function getProductsByCollection(slug: string): Product[] { const col = getCollectionBySlug(slug); return col ? products.filter((p) => p.category === col.name) : products; }
+export function getProductsByCollection(slug: string): Product[] { const col = getCollectionBySlug(slug); return col ? products.filter((p) => !p.isTest && p.category === col.name) : products.filter((p) => !p.isTest); }
 export interface VariantSibling { slug: string; label: string; isCurrent: boolean; }
 export function getVariantSiblings(_slug: string): VariantSibling[] { return []; }
 export interface SizeSibling { slug: string; label: string; isCurrent: boolean; }
