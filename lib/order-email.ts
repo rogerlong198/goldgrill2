@@ -38,8 +38,9 @@ export type OrderEmailInput = {
 };
 
 const BRAND_NAME = "Gold Grill";
+const BRAND_TAGLINE = "Tudo para o seu churrasco";
 const BRAND_TRACKING_URL =
-  process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "") || "https://goldgrill.com.br";
+  process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "") || "https://goldgrill.shop";
 const BRAND_LOGO_URL = `${BRAND_TRACKING_URL}/images/logo-gold-grill.png`;
 
 // Paleta brand
@@ -94,12 +95,17 @@ export function renderOrderConfirmationEmail(order: OrderEmailInput) {
     .filter(Boolean)
     .join(" · ");
 
+  // Cliente de e-mail (Gmail, etc) NÃO resolve caminho relativo — a imagem
+  // precisa de URL absoluta com o domínio da loja.
+  const absoluteImg = (src?: string) =>
+    src ? (src.startsWith("http") ? src : `${BRAND_TRACKING_URL}${src.startsWith("/") ? "" : "/"}${src}`) : "";
+
   const itemRows = order.items
     .map((item) => {
       const lineTotal = item.price * item.quantity;
       const imgCell = item.image
         ? `<td width="56" style="padding:10px 12px 10px 0;vertical-align:top;">
-             <img src="${escapeHtml(item.image)}" width="56" height="56" alt="" style="display:block;width:56px;height:56px;border-radius:8px;border:1px solid ${C.line};object-fit:cover;" />
+             <img src="${escapeHtml(absoluteImg(item.image))}" width="56" height="56" alt="" style="display:block;width:56px;height:56px;border-radius:8px;border:1px solid ${C.line};object-fit:cover;" />
            </td>`
         : `<td width="56" style="padding:10px 12px 10px 0;vertical-align:top;">
              <div style="width:56px;height:56px;border-radius:8px;border:1px solid ${C.line};background:${C.cardSoft};"></div>
@@ -142,7 +148,7 @@ export function renderOrderConfirmationEmail(order: OrderEmailInput) {
     <!-- header / logo -->
     <div style="background:${C.card};padding:24px 32px 20px;text-align:center;border-bottom:1px solid ${C.lineSoft};">
       <img src="${BRAND_LOGO_URL}" alt="${BRAND_NAME}" height="80" style="display:inline-block;height:80px;width:auto;max-width:240px;border:0;outline:none;text-decoration:none;" />
-      <p style="margin:4px 0 0;font-size:11px;color:${C.muted};letter-spacing:1.4px;text-transform:uppercase;">Enxovais com curadoria premium</p>
+      <p style="margin:4px 0 0;font-size:11px;color:${C.muted};letter-spacing:1.4px;text-transform:uppercase;">${BRAND_TAGLINE}</p>
     </div>
 
     <!-- intro -->
@@ -193,7 +199,7 @@ export function renderOrderConfirmationEmail(order: OrderEmailInput) {
               </p>
             </div>
 
-            <a href="${escapeHtml(trackingHref)}" style="display:block;background:${C.accent};color:${C.primary};text-decoration:none;padding:0 18px;border-radius:999px;font-size:14px;font-weight:800;line-height:54px;min-height:54px;box-shadow:0 8px 18px rgba(255,82,82,0.28);letter-spacing:0.4px;text-transform:uppercase;">
+            <a href="${escapeHtml(trackingHref)}" style="display:block;background:${C.accent};color:${C.primary};text-decoration:none;padding:0 18px;border-radius:999px;font-size:14px;font-weight:800;line-height:54px;min-height:54px;box-shadow:0 8px 18px rgba(185,138,46,0.30);letter-spacing:0.4px;text-transform:uppercase;">
               Acompanhar meu pedido
             </a>
 
@@ -277,7 +283,7 @@ export function renderOrderConfirmationEmail(order: OrderEmailInput) {
       </div>
       <div style="width:42px;height:2px;background:${C.accent};margin:10px auto 14px;"></div>
       <p style="margin:0 0 14px;font-size:11px;color:${C.mutedSoft};line-height:1.45;">
-        Enxovais e decoração com curadoria premium.
+        Churrasqueiras, facas, kits e presentes premium para quem ama a brasa.
       </p>
       <div style="border-top:1px solid ${C.footerLine};padding-top:14px;">
         <p style="margin:0;font-size:11px;color:#8a8a8a;">© ${new Date().getFullYear()} ${BRAND_NAME}. Todos os direitos reservados.</p>
