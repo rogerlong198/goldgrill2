@@ -13,8 +13,26 @@ import type { OrderEmailItem } from "@/lib/order-email";
 import { getActiveGateway, markTxGateway } from "@/lib/gateways/active";
 import { createPixMedusa, medusaConfigured } from "@/lib/gateways/medusa";
 import { createPixCenturion, centurionConfigured } from "@/lib/gateways/centurion";
+import { qstashConfigured, scheduleDelayedCall, abandonedSig } from "@/lib/qstash";
 
 export const dynamic = "force-dynamic";
+
+// Depois de gerar o PIX, o QStash chama /api/abandoned/check nesse tempo. Se o
+// pedido não tiver sido pago, dispara o e-mail de pedido pendente. (PIX expira
+// em 10 min → 15 dá margem depois do vencimento.)
+const ABANDONED_DELAY_MIN = 15;
+
+// Agenda o e-mail de pedido pendente via QStash (best-effort). Precisa de
+// NEXT_PUBLIC_APP_URL (o QStash chama uma URL pública) + QSTASH_TOKEN.
+async function scheduleAbandonedCheck(appBaseUrl: string, txid: string) {
+  if (!qstashConfigured() || !appBaseUrl) return;
+  try {
+    const callback = `${appBaseUrl}/api/abandoned/check?txid=${encodeURIComponent(txid)}&sig=${abandonedSig(txid)}`;
+    await scheduleDelayedCall(callback, ABANDONED_DELAY_MIN * 60);
+  } catch (err) {
+    console.error("[PIX API] Falha ao agendar e-mail de pendente:", err);
+  }
+}
 
 // Persiste o pedido no KV (snapshot pro e-mail/painel) e indexa. Compartilhado
 // pelos gateways Medusa/Centurion. Espelha a persistência do fluxo Pagou abaixo.
@@ -199,6 +217,7 @@ export async function POST(request: Request) {
         cpf: cpfDigits,
       });
       await markTxGateway(String(txid), "medusa");
+      await scheduleAbandonedCheck(appBaseUrl, String(txid));
     }
     return NextResponse.json({
       txid,
@@ -262,6 +281,7 @@ export async function POST(request: Request) {
         cpf: cpfDigits,
       });
       await markTxGateway(String(txid), "centurion");
+      await scheduleAbandonedCheck(appBaseUrl, String(txid));
     }
     return NextResponse.json({
       txid,
@@ -447,6 +467,8 @@ export async function POST(request: Request) {
         // Não bloqueia o pagamento; apenas o e-mail server-side pode não sair.
         console.error("[PIX API] Falha ao persistir pedido no KV:", err);
       }
+      // Agenda o e-mail de pedido pendente (Pagou.ai).
+      await scheduleAbandonedCheck(appBaseUrl, String(txid));
     }
 
     return NextResponse.json({

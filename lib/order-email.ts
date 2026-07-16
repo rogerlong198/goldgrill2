@@ -295,3 +295,95 @@ export function renderOrderConfirmationEmail(order: OrderEmailInput) {
 
   return { subject, html };
 }
+
+// E-mail de PEDIDO PENDENTE (o cliente gerou o PIX mas não pagou). Disparado
+// pelo QStash ~15 min depois, se o pagamento não caiu. Foco: lembrar do pedido
+// e trazer o cliente de volta pra finalizar.
+export function renderAbandonedCartEmail(order: OrderEmailInput) {
+  const firstName = (order.customer.name || "").trim().split(" ")[0] || "Cliente";
+  const absoluteImg = (src?: string) =>
+    src ? (src.startsWith("http") ? src : `${BRAND_TRACKING_URL}${src.startsWith("/") ? "" : "/"}${src}`) : "";
+
+  const itemRows = order.items
+    .map((item) => {
+      const imgCell = item.image
+        ? `<td width="52" style="padding:9px 12px 9px 0;vertical-align:top;">
+             <img src="${escapeHtml(absoluteImg(item.image))}" width="52" height="52" alt="" style="display:block;width:52px;height:52px;border-radius:8px;border:1px solid ${C.line};object-fit:cover;" />
+           </td>`
+        : "";
+      return `
+        <tr>
+          ${imgCell}
+          <td style="padding:9px 0;vertical-align:middle;color:${C.text};font-size:13px;">
+            <strong style="display:block;color:${C.primary};font-size:13px;font-weight:700;">${escapeHtml(item.name)}</strong>
+            <span style="display:inline-block;margin-top:3px;color:${C.muted};font-size:11px;">Qtd: ${item.quantity} · ${formatBRL(item.price)} un.</span>
+          </td>
+          <td align="right" style="padding:9px 0;vertical-align:middle;color:${C.text};font-size:13px;font-weight:700;white-space:nowrap;">
+            ${formatBRL(item.price * item.quantity)}
+          </td>
+        </tr>`;
+    })
+    .join("");
+
+  const shopHref = `${BRAND_TRACKING_URL}/checkout`;
+  const subject = `${firstName}, seu pedido ficou pela metade — finalize agora`;
+
+  const html = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1.0" /><title>${escapeHtml(subject)}</title></head>
+<body style="margin:0;padding:0;background:${C.bg};font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;">
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;">Seus produtos ainda estão te esperando no ${BRAND_NAME}.</div>
+  <div style="max-width:600px;margin:0 auto;background:${C.card};">
+    <div style="background:${C.accent};height:5px;"></div>
+    <div style="background:${C.card};padding:24px 32px 20px;text-align:center;border-bottom:1px solid ${C.lineSoft};">
+      <img src="${BRAND_LOGO_URL}" alt="${BRAND_NAME}" height="72" style="display:inline-block;height:72px;width:auto;max-width:220px;border:0;" />
+      <p style="margin:4px 0 0;font-size:11px;color:${C.muted};letter-spacing:1.4px;text-transform:uppercase;">${BRAND_TAGLINE}</p>
+    </div>
+
+    <div style="background:${C.cardSofter};padding:26px 30px;text-align:center;border-bottom:1px solid ${C.line};">
+      <p style="margin:0 0 6px;font-size:34px;line-height:1;">🔥</p>
+      <h1 style="margin:0 0 8px;font-size:20px;color:${C.primary};font-weight:800;line-height:1.25;">
+        ${escapeHtml(firstName)}, seu pedido ficou pela metade!
+      </h1>
+      <p style="margin:0;font-size:13px;color:${C.muted};line-height:1.5;">
+        Você separou ótimos produtos mas o pagamento não foi concluído. Seus itens ainda estão reservados — finalize agora antes que acabe o estoque.
+      </p>
+    </div>
+
+    <div style="padding:20px 30px 8px;">
+      <p style="margin:0 0 8px;font-size:11px;font-weight:800;color:${C.primary};letter-spacing:1.2px;text-transform:uppercase;">Seu pedido</p>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid ${C.line};">
+        ${itemRows}
+      </table>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid ${C.line};margin-top:4px;">
+        <tr>
+          <td style="padding:12px 0;color:${C.primary};font-size:14px;font-weight:800;">Total</td>
+          <td align="right" style="padding:12px 0;color:${C.green};font-size:16px;font-weight:800;">${formatBRL(order.total)}</td>
+        </tr>
+      </table>
+    </div>
+
+    <div style="padding:8px 30px 26px;text-align:center;">
+      <a href="${escapeHtml(shopHref)}" style="display:block;background:${C.accent};color:${C.primary};text-decoration:none;padding:0 18px;border-radius:999px;font-size:15px;font-weight:800;line-height:56px;min-height:56px;box-shadow:0 8px 18px rgba(185,138,46,0.30);letter-spacing:0.4px;text-transform:uppercase;">
+        Finalizar meu pedido
+      </a>
+      <p style="margin:12px 0 0;font-size:12px;color:${C.muted};line-height:1.5;">
+        Dica: use o cupom <strong style="color:${C.accent};">PRIMEIRACOMPRA</strong> e ganhe 5% de desconto ao concluir.
+      </p>
+    </div>
+
+    <div style="background:${C.dark};padding:26px 32px;text-align:center;">
+      <div style="display:inline-block;background:#ffffff;border-radius:14px;padding:9px 15px;">
+        <img src="${BRAND_LOGO_URL}" alt="${BRAND_NAME}" height="56" style="display:block;height:56px;width:auto;max-width:180px;border:0;" />
+      </div>
+      <p style="margin:12px 0 0;font-size:11px;color:${C.mutedSoft};line-height:1.45;">
+        Churrasqueiras, facas, kits e presentes premium para quem ama a brasa.
+      </p>
+      <p style="margin:10px 0 0;font-size:11px;color:#8a8a8a;">© ${new Date().getFullYear()} ${BRAND_NAME}. Todos os direitos reservados.</p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+  return { subject, html };
+}

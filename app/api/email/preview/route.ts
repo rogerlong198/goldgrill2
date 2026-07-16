@@ -1,11 +1,13 @@
-import { renderOrderConfirmationEmail } from "@/lib/order-email";
+import { renderOrderConfirmationEmail, renderAbandonedCartEmail } from "@/lib/order-email";
 
 export const dynamic = "force-dynamic";
 
-// Preview do e-mail de confirmação com dados de exemplo. Só pra conferir o
-// design no navegador — usa dados fixos fake, não toca em nada real.
-export async function GET() {
-  const { html } = renderOrderConfirmationEmail({
+// Preview dos e-mails com dados de exemplo. ?tipo=pendente mostra o de pedido
+// pendente; sem param mostra o de confirmação. Dados fake, não toca em nada real.
+export async function GET(request: Request) {
+  const tipo = new URL(request.url).searchParams.get("tipo");
+  const render = tipo === "pendente" ? renderAbandonedCartEmail : renderOrderConfirmationEmail;
+  const { html } = render({
     orderCode: "GG-8F3A2K",
     customer: { name: "João Silva", email: "joao@email.com", phone: "(91) 99999-8888" },
     address: {

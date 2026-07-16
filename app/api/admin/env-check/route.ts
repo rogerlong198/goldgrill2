@@ -59,6 +59,13 @@ export async function GET() {
       ],
     },
     {
+      title: "E-mail de pedido pendente (QStash)",
+      desc: "Opcional — dispara o e-mail de recuperação ~15 min após o PIX não pago. Precisa de e-mail (Resend) + KV + domínio ativos.",
+      items: [
+        { label: "QStash — token", envs: ["QSTASH_TOKEN"], set: has("QSTASH_TOKEN"), level: "opt", hint: "Do Upstash (QStash). Agenda o disparo sem plano pago da Vercel." },
+      ],
+    },
+    {
       title: "Relay (ocultar domínio da Pagou.ai)",
       desc: "Opcional — só se a loja envia os pagamentos por um relay externo.",
       items: [
