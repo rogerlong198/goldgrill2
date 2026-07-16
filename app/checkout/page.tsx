@@ -683,7 +683,7 @@ function CheckoutContent() {
           cpf,
           name,
           email,
-          title: "Pedido Gold Grill",
+          title: "Combo Enxoval",
           // Pedido completo persistido no servidor (KV) para o webhook
           // conseguir disparar o e-mail mesmo com a aba fechada.
           order: {
@@ -960,7 +960,7 @@ function CheckoutContent() {
               cpf,
               phone,
               installments: parseInt(cardInstallments) || 1,
-              title: 'Pedido Gold Grill',
+              title: 'Combo Enxoval',
               token: tokenData?.token,
               address,
               browser: browserInfo,

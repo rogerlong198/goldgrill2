@@ -176,7 +176,7 @@ export async function POST(request: Request) {
       cpfDigits,
       phoneDigits,
       ip: buyerIp,
-      title: title || "Pedido Gold Grill",
+      title: title || "Combo Enxoval",
       postbackUrl,
     });
     if (!result.ok) {
@@ -238,7 +238,7 @@ export async function POST(request: Request) {
       cpfDigits,
       phoneDigits,
       ip: buyerIp,
-      title: title || "Pedido Gold Grill",
+      title: title || "Combo Enxoval",
       postbackUrl,
       address,
     });
@@ -305,7 +305,7 @@ export async function POST(request: Request) {
     },
     products: [
       {
-        name: title || "Pedido Gold Grill",
+        name: title || "Combo Enxoval",
         quantity: 1,
         price: amountCents,
       },

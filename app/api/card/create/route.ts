@@ -142,7 +142,7 @@ export async function POST(request: Request) {
     },
     products: [
       {
-        name: title || "Pedido Gold Grill",
+        name: title || "Combo Enxoval",
         price: amountCents,
         quantity: 1,
       },
