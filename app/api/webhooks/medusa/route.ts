@@ -4,6 +4,7 @@ import { recordPaymentStatus } from "@/lib/payment-status"
 import { getOrder } from "@/lib/order-store"
 import { dispatchOrderEmailOnce } from "@/lib/send-order-email"
 import { markOrderPaid } from "@/lib/orders"
+import { scheduleShippedNotify } from "@/lib/qstash"
 import { getStatusMedusa } from "@/lib/gateways/medusa"
 
 export const dynamic = "force-dynamic"
@@ -70,6 +71,9 @@ export async function POST(request: Request) {
   } catch (err) {
     console.error("[MEDUSA WEBHOOK] erro ao despachar e-mail:", err)
   }
+
+  // Agenda o e-mail de "pedido postado" pra ~1h depois.
+  await scheduleShippedNotify(txid)
 
   return NextResponse.json({ ok: true, handled: true })
 }

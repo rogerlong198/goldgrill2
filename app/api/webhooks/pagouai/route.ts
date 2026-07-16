@@ -4,6 +4,7 @@ import { recordPaymentStatus, isGatewayPaidStatus } from "@/lib/payment-status"
 import { getOrder } from "@/lib/order-store"
 import { dispatchOrderEmailOnce } from "@/lib/send-order-email"
 import { markOrderPaid } from "@/lib/orders"
+import { scheduleShippedNotify } from "@/lib/qstash"
 
 export const dynamic = "force-dynamic"
 
@@ -119,6 +120,8 @@ export async function POST(request: Request) {
         // Best-effort: nunca derruba o webhook por causa do e-mail.
         console.error("[PAGOUAI WEBHOOK] erro ao despachar e-mail:", err)
       }
+      // Agenda o e-mail de "pedido postado" pra ~1h depois.
+      await scheduleShippedNotify(txid)
     }
   }
 

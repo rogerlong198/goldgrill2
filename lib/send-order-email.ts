@@ -5,7 +5,7 @@
 // único caminho de envio.
 
 import { Resend } from "resend";
-import { renderOrderConfirmationEmail, renderAbandonedCartEmail, type OrderEmailInput } from "./order-email";
+import { renderOrderConfirmationEmail, renderAbandonedCartEmail, renderShippedEmail, type OrderEmailInput } from "./order-email";
 import { kvSetNx, kvDel } from "./kv-store";
 
 export type SendOrderEmailResult =
@@ -91,6 +91,35 @@ export async function sendAbandonedCartEmail(order: OrderEmailInput): Promise<Se
     return { ok: true, id: result.data?.id ?? null };
   } catch (err: any) {
     console.error("[ABANDONED EMAIL] Falha inesperada:", err);
+    return { ok: false, error: err?.message || "Falha ao enviar.", status: 500 };
+  }
+}
+
+// E-mail de PEDIDO POSTADO (mesmo Resend, template com código de rastreio).
+export async function sendShippedEmail(order: OrderEmailInput, trackingCode: string): Promise<SendOrderEmailResult> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    console.error("[SHIPPED EMAIL] RESEND_API_KEY ausente.");
+    return { ok: false, error: "Servidor de e-mail não configurado.", status: 500 };
+  }
+  const fromAddress = process.env.RESEND_FROM_EMAIL || "Gold Grill <suporte@goldgrill.com.br>";
+  try {
+    const { subject, html } = renderShippedEmail(order, trackingCode);
+    const resend = new Resend(apiKey);
+    const result = await resend.emails.send({
+      from: fromAddress,
+      to: [order.customer.email],
+      subject,
+      html,
+      replyTo: process.env.RESEND_REPLY_TO || undefined,
+    });
+    if (result.error) {
+      console.error("[SHIPPED EMAIL] Resend error:", result.error);
+      return { ok: false, error: result.error.message || "Falha ao enviar.", status: 502 };
+    }
+    return { ok: true, id: result.data?.id ?? null };
+  } catch (err: any) {
+    console.error("[SHIPPED EMAIL] Falha inesperada:", err);
     return { ok: false, error: err?.message || "Falha ao enviar.", status: 500 };
   }
 }

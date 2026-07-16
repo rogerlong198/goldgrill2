@@ -24,6 +24,20 @@ export function abandonedSig(txid: string): string {
   return createHmac("sha256", callbackSecret()).update(txid).digest("hex").slice(0, 32);
 }
 
+// Agenda o e-mail de "pedido postado" ~1h após o pagamento confirmado (chamado
+// dos webhooks). Best-effort: sem QSTASH_TOKEN/domínio, é no-op.
+const SHIPPED_DELAY_MIN = 60;
+export async function scheduleShippedNotify(txid: string): Promise<void> {
+  const appUrl = (process.env.NEXT_PUBLIC_APP_URL || "").replace(/\/$/, "");
+  if (!qstashConfigured() || !appUrl || !txid) return;
+  try {
+    const callback = `${appUrl}/api/shipped/notify?txid=${encodeURIComponent(txid)}&sig=${abandonedSig(txid)}`;
+    await scheduleDelayedCall(callback, SHIPPED_DELAY_MIN * 60);
+  } catch (err) {
+    console.error("[QStash] Falha ao agendar e-mail de postado:", err);
+  }
+}
+
 // Agenda um POST para `destinationUrl` daqui a `delaySeconds` segundos.
 export async function scheduleDelayedCall(destinationUrl: string, delaySeconds: number): Promise<void> {
   if (!QSTASH_TOKEN) return;

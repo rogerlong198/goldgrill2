@@ -1,13 +1,12 @@
-import { renderOrderConfirmationEmail, renderAbandonedCartEmail } from "@/lib/order-email";
+import { renderOrderConfirmationEmail, renderAbandonedCartEmail, renderShippedEmail } from "@/lib/order-email";
 
 export const dynamic = "force-dynamic";
 
-// Preview dos e-mails com dados de exemplo. ?tipo=pendente mostra o de pedido
-// pendente; sem param mostra o de confirmação. Dados fake, não toca em nada real.
+// Preview dos e-mails com dados de exemplo. ?tipo=pendente | postado; sem param
+// mostra o de confirmação. Dados fake, não toca em nada real.
 export async function GET(request: Request) {
   const tipo = new URL(request.url).searchParams.get("tipo");
-  const render = tipo === "pendente" ? renderAbandonedCartEmail : renderOrderConfirmationEmail;
-  const { html } = render({
+  const order = {
     orderCode: "GG-8F3A2K",
     customer: { name: "João Silva", email: "joao@email.com", phone: "(91) 99999-8888" },
     address: {
@@ -28,7 +27,13 @@ export async function GET(request: Request) {
     discount: 2.72,
     coupon: "PRIMEIRACOMPRA",
     total: 51.76,
-    paymentMethod: "pix",
-  });
+    paymentMethod: "pix" as const,
+  };
+  const { html } =
+    tipo === "pendente"
+      ? renderAbandonedCartEmail(order)
+      : tipo === "postado"
+        ? renderShippedEmail(order, "PB482910375BR")
+        : renderOrderConfirmationEmail(order);
   return new Response(html, { headers: { "content-type": "text/html; charset=utf-8" } });
 }

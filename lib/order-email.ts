@@ -296,6 +296,72 @@ export function renderOrderConfirmationEmail(order: OrderEmailInput) {
   return { subject, html };
 }
 
+// E-mail de PEDIDO POSTADO (~1h após o pagamento). Traz o código de rastreio já
+// preenchido e um botão que abre a página de rastreio da loja com o código.
+export function renderShippedEmail(order: OrderEmailInput, trackingCode: string) {
+  const firstName = (order.customer.name || "").trim().split(" ")[0] || "Cliente";
+  const trackingHref = `${BRAND_TRACKING_URL}/rastreio-de-pedido?codigo=${encodeURIComponent(trackingCode)}`;
+  const subject = `📦 ${firstName}, seu pedido foi postado! Código ${trackingCode}`;
+
+  const html = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1.0" /><title>${escapeHtml(subject)}</title></head>
+<body style="margin:0;padding:0;background:${C.bg};font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;">
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;">Seu pedido ${escapeHtml(order.orderCode)} foi postado. Código de rastreio: ${escapeHtml(trackingCode)}.</div>
+  <div style="max-width:600px;margin:0 auto;background:${C.card};">
+    <div style="background:${C.accent};height:5px;"></div>
+    <div style="background:${C.card};padding:24px 32px 20px;text-align:center;border-bottom:1px solid ${C.lineSoft};">
+      <img src="${BRAND_LOGO_URL}" alt="${BRAND_NAME}" height="72" style="display:inline-block;height:72px;width:auto;max-width:220px;border:0;" />
+      <p style="margin:4px 0 0;font-size:11px;color:${C.muted};letter-spacing:1.4px;text-transform:uppercase;">${BRAND_TAGLINE}</p>
+    </div>
+
+    <div style="background:${C.cardSofter};padding:26px 30px;text-align:center;border-bottom:1px solid ${C.line};">
+      <p style="margin:0 0 6px;font-size:34px;line-height:1;">📦</p>
+      <h1 style="margin:0 0 8px;font-size:20px;color:${C.primary};font-weight:800;line-height:1.25;">
+        ${escapeHtml(firstName)}, seu pedido foi postado!
+      </h1>
+      <p style="margin:0;font-size:13px;color:${C.muted};line-height:1.5;">
+        Boa notícia: seu pedido <strong style="color:${C.primary};">${escapeHtml(order.orderCode)}</strong> já saiu para entrega. Use o código abaixo para acompanhar cada passo até a sua casa.
+      </p>
+    </div>
+
+    <div style="padding:24px 30px 8px;text-align:center;">
+      <p style="margin:0 0 8px;font-size:10px;color:${C.muted};text-transform:uppercase;letter-spacing:1.4px;font-weight:700;">Código de rastreio</p>
+      <div style="background:#f7f7f7;border:1px solid #dfdfdf;border-radius:12px;padding:0 14px;margin:0 auto 20px;max-width:320px;min-height:52px;line-height:52px;">
+        <p style="margin:0;font-size:20px;font-family:'Courier New',monospace;color:${C.primary};font-weight:800;letter-spacing:2px;line-height:52px;">${escapeHtml(trackingCode)}</p>
+      </div>
+      <a href="${escapeHtml(trackingHref)}" style="display:block;background:${C.accent};color:${C.primary};text-decoration:none;padding:0 18px;border-radius:999px;font-size:15px;font-weight:800;line-height:56px;min-height:56px;box-shadow:0 8px 18px rgba(185,138,46,0.30);letter-spacing:0.4px;text-transform:uppercase;max-width:360px;margin:0 auto;">
+        Rastrear meu pedido
+      </a>
+      <p style="margin:12px 0 0;font-size:11px;color:${C.muted};line-height:1.4;">
+        O botão abre a página de rastreio da loja com o seu código já preenchido.
+      </p>
+    </div>
+
+    <div style="padding:14px 30px 26px;">
+      <div style="background:${C.accentSoft};border:1px solid ${C.accentBorder};border-radius:9px;padding:12px 14px;text-align:center;">
+        <p style="margin:0;font-size:12px;color:#9a5b00;line-height:1.45;">
+          O primeiro rastreio pode levar até 24h para aparecer no site dos Correios. Pode ficar tranquilo — seu pedido já está a caminho.
+        </p>
+      </div>
+    </div>
+
+    <div style="background:${C.dark};padding:26px 32px;text-align:center;">
+      <div style="display:inline-block;background:#ffffff;border-radius:14px;padding:9px 15px;">
+        <img src="${BRAND_LOGO_URL}" alt="${BRAND_NAME}" height="56" style="display:block;height:56px;width:auto;max-width:180px;border:0;" />
+      </div>
+      <p style="margin:12px 0 0;font-size:11px;color:${C.mutedSoft};line-height:1.45;">
+        Churrasqueiras, facas, kits e presentes premium para quem ama a brasa.
+      </p>
+      <p style="margin:10px 0 0;font-size:11px;color:#8a8a8a;">© ${new Date().getFullYear()} ${BRAND_NAME}. Todos os direitos reservados.</p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+  return { subject, html };
+}
+
 // E-mail de PEDIDO PENDENTE (o cliente gerou o PIX mas não pagou). Disparado
 // pelo QStash ~15 min depois, se o pagamento não caiu. Foco: lembrar do pedido
 // e trazer o cliente de volta pra finalizar.
