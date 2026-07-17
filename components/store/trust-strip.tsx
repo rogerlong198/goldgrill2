@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { PackageCheck, RefreshCw, Star } from "lucide-react"
+import { PackageCheck, RefreshCw, Truck } from "lucide-react"
 
 const TRUST_ITEMS = [
   {
@@ -10,9 +10,9 @@ const TRUST_ITEMS = [
     Icon: PackageCheck,
   },
   {
-    title: "Loja bem avaliada",
-    description: "no Reclame AQUI",
-    Icon: Star,
+    title: "Frete grátis",
+    description: "para todo o Brasil",
+    Icon: Truck,
   },
   {
     title: "30 dias de troca",
