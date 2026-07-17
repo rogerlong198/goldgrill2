@@ -1,13 +1,13 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { PackageCheck, RefreshCw, Truck } from "lucide-react"
+import { RefreshCw, ShieldCheck, Truck } from "lucide-react"
 
 const TRUST_ITEMS = [
   {
-    title: "+2 milhões de pedidos",
-    description: "entregues no Brasil",
-    Icon: PackageCheck,
+    title: "Compra 100% segura",
+    description: "pagamento protegido",
+    Icon: ShieldCheck,
   },
   {
     title: "Frete grátis",
@@ -15,8 +15,8 @@ const TRUST_ITEMS = [
     Icon: Truck,
   },
   {
-    title: "30 dias de troca",
-    description: "garantida",
+    title: "Garantia de 30 dias",
+    description: "trocou ou devolveu",
     Icon: RefreshCw,
   },
 ]
