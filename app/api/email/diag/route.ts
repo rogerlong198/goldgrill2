@@ -1,21 +1,49 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { kvConfigured, kvSetJSON, kvGetJSON } from "@/lib/kv-store";
+import { getActiveGateway } from "@/lib/gateways/active";
 
 export const dynamic = "force-dynamic";
 
-// Diagnóstico de e-mail. GET sem dados → formulário (evita problema de senha com
-// caracteres especiais na URL). POST {secret,to} → tenta enviar e devolve o
-// erro EXATO do Resend (domínio não verificado, chave inválida, sandbox).
+// Diagnóstico de e-mail + KV. GET sem dados → formulário (evita problema de senha
+// com caracteres especiais na URL). POST {secret,to} → checa envs, testa o KV de
+// verdade (escreve+lê) e tenta enviar um e-mail, devolvendo o erro exato de cada.
 
 function envDiag() {
   const apiKey = (process.env.RESEND_API_KEY || "").trim();
+  const kvUrl = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || "";
+  const kvToken = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || "";
   return {
     RESEND_API_KEY: apiKey ? `presente (${apiKey.slice(0, 3)}…${apiKey.slice(-3)})` : "❌ FALTANDO",
     RESEND_FROM_EMAIL: (process.env.RESEND_FROM_EMAIL || "").trim() || "❌ FALTANDO (usa fallback)",
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL || "❌ FALTANDO",
     QSTASH_TOKEN: process.env.QSTASH_TOKEN ? "presente" : "❌ FALTANDO",
-    KV: process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL ? "presente" : "❌ FALTANDO",
+    // KV precisa de URL **E** TOKEN. Checa cada um separado (o gateway só troca
+    // quando os dois estão presentes → kvConfigured()).
+    KV_REST_API_URL: kvUrl ? "presente" : "❌ FALTANDO",
+    KV_REST_API_TOKEN: kvToken ? "presente" : "❌ FALTANDO",
+    KV_pronto: kvConfigured() ? "✅ SIM (URL + TOKEN)" : "❌ NÃO — gateway não troca sem isso",
   };
+}
+
+// Escreve uma chave no KV e lê de volta. Confirma que o Upstash responde de
+// verdade (não só que as envs existem). Também mostra o gateway ativo salvo.
+async function kvTest() {
+  if (!kvConfigured()) {
+    return { ok: false, motivo: "KV não configurado (falta URL ou TOKEN) — o gateway NÃO consegue trocar." };
+  }
+  try {
+    const marker = `diag-${Date.now()}`;
+    await kvSetJSON("diag:ping", marker, 60);
+    const readBack = await kvGetJSON<string>("diag:ping");
+    const activeGateway = await getActiveGateway();
+    if (readBack !== marker) {
+      return { ok: false, motivo: "KV configurado mas a leitura não bateu com a escrita.", escreveu: marker, leu: readBack, activeGateway };
+    }
+    return { ok: true, escreveu_e_leu: marker, activeGateway };
+  } catch (e: any) {
+    return { ok: false, motivo: "Erro ao falar com o Upstash.", erro: e?.message };
+  }
 }
 
 export async function GET() {
@@ -64,9 +92,10 @@ export async function POST(request: Request) {
   const apiKey = (process.env.RESEND_API_KEY || "").trim();
   const fromAddress = (process.env.RESEND_FROM_EMAIL || "").trim();
   const diag = envDiag();
+  const kv = await kvTest();
 
-  if (!apiKey) return NextResponse.json({ ok: false, motivo: "RESEND_API_KEY não configurada.", diag });
-  if (!to) return NextResponse.json({ ok: false, motivo: "Informe um e-mail de teste.", diag });
+  if (!apiKey) return NextResponse.json({ ok: false, motivo: "RESEND_API_KEY não configurada.", diag, kv });
+  if (!to) return NextResponse.json({ ok: false, motivo: "Informe um e-mail de teste.", diag, kv });
 
   try {
     const resend = new Resend(apiKey);
@@ -83,10 +112,11 @@ export async function POST(request: Request) {
         erro: result.error,
         dica: "Se falar 'domain not verified' ou 'testing emails', você precisa VERIFICAR o domínio goldgrill.shop no Resend (Domains → Add → SPF/DKIM no DNS).",
         diag,
+        kv,
       });
     }
-    return NextResponse.json({ ok: true, enviado: true, id: result.data?.id, para: to, diag });
+    return NextResponse.json({ ok: true, enviado: true, id: result.data?.id, para: to, diag, kv });
   } catch (e: any) {
-    return NextResponse.json({ ok: false, motivo: "Exceção ao enviar.", erro: e?.message, diag });
+    return NextResponse.json({ ok: false, motivo: "Exceção ao enviar.", erro: e?.message, diag, kv });
   }
 }
