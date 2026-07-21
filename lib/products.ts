@@ -3217,15 +3217,15 @@ export const products: Product[] = [
     "name": "Churrasqueira Portátil a Carvão GG Trip Bag",
     "price": 1580,
     "compareAtPrice": 7900,
-    "image": "/images/produtos/churrasqueira-portatil-a-carvao-gg-trip-bag-1.webp",
+    "image": "/images/produtos/churrasqueira-portatil-a-carvao-gg-trip-bag-7.webp",
     "images": [
+      "/images/produtos/churrasqueira-portatil-a-carvao-gg-trip-bag-7.webp",
       "/images/produtos/churrasqueira-portatil-a-carvao-gg-trip-bag-1.webp",
       "/images/produtos/churrasqueira-portatil-a-carvao-gg-trip-bag-2.webp",
       "/images/produtos/churrasqueira-portatil-a-carvao-gg-trip-bag-3.webp",
       "/images/produtos/churrasqueira-portatil-a-carvao-gg-trip-bag-4.webp",
       "/images/produtos/churrasqueira-portatil-a-carvao-gg-trip-bag-5.webp",
-      "/images/produtos/churrasqueira-portatil-a-carvao-gg-trip-bag-6.webp",
-      "/images/produtos/churrasqueira-portatil-a-carvao-gg-trip-bag-7.webp"
+      "/images/produtos/churrasqueira-portatil-a-carvao-gg-trip-bag-6.webp"
     ],
     "rating": 4.7,
     "reviews": 89,
