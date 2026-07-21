@@ -68,7 +68,7 @@ export const collections: Collection[] = [
     "slug": "churrasqueiras-eletricas",
     "name": "Churrasqueiras Elétricas",
     "image": "/images/produtos/grelhador-eletrico-portatil-gg-plug-n-play-versao-copa.png",
-    "productCount": 5,
+    "productCount": 6,
     "description": "Nossa coleção de Churrasqueiras Elétricas"
   },
   {

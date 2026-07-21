@@ -3213,6 +3213,29 @@ export const products: Product[] = [
     "tags": []
   },
   {
+    "id": 230,
+    "name": "Churrasqueira Portátil a Carvão GG Trip Bag",
+    "price": 1580,
+    "compareAtPrice": 7900,
+    "image": "/images/produtos/churrasqueira-portatil-a-carvao-gg-trip-bag-1.webp",
+    "images": [
+      "/images/produtos/churrasqueira-portatil-a-carvao-gg-trip-bag-1.webp",
+      "/images/produtos/churrasqueira-portatil-a-carvao-gg-trip-bag-2.webp",
+      "/images/produtos/churrasqueira-portatil-a-carvao-gg-trip-bag-3.webp",
+      "/images/produtos/churrasqueira-portatil-a-carvao-gg-trip-bag-4.webp",
+      "/images/produtos/churrasqueira-portatil-a-carvao-gg-trip-bag-5.webp",
+      "/images/produtos/churrasqueira-portatil-a-carvao-gg-trip-bag-6.webp",
+      "/images/produtos/churrasqueira-portatil-a-carvao-gg-trip-bag-7.webp"
+    ],
+    "rating": 4.7,
+    "reviews": 89,
+    "category": "Churrasqueiras Elétricas",
+    "slug": "churrasqueira-portatil-a-carvao-gg-trip-bag",
+    "description": "Churrasqueira Portátil a Carvão GG Trip Bag — produto da linha Churrasqueiras Elétricas da nossa loja. Grelha em ferro fundido de 310mm com revestimento antiaderente, estrutura em aço inoxidável e ventoinha de controle de brasa (pilhas ou USB) que reduz a fumaça e queima por até 2 horas. Acompanha bag exclusiva pra levar pra qualquer lugar. Qualidade premium, acabamento em inox e a durabilidade que o seu churrasco merece. Entrega para todo o Brasil.",
+    "isTest": false,
+    "tags": []
+  },
+  {
     "id": 229,
     "name": "Produto de Teste — Pagamento (R$5)",
     "price": 5,
