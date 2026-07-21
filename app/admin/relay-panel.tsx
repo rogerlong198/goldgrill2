@@ -1,7 +1,21 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react"
-import { Check, Copy, Link2, Plus, RefreshCw, Sparkles, Trash2, X, Radio, KeyRound, ShieldCheck } from "lucide-react"
+import { useCallback, useEffect, useState, type ReactNode } from "react"
+import {
+  Check,
+  ChevronDown,
+  ChevronUp,
+  Copy,
+  Link2,
+  Plus,
+  RefreshCw,
+  Sparkles,
+  Trash2,
+  X,
+  Radio,
+  KeyRound,
+  ShieldCheck,
+} from "lucide-react"
 
 type RelayTarget = { key: string; name: string; url: string; secret: string; createdAt: string }
 type RelayEvent = {
@@ -128,6 +142,46 @@ function Field({ label, value, small }: { label: string; value: string; small?: 
         </code>
         <CopyBtn text={value} />
       </div>
+    </div>
+  )
+}
+
+// Card colapsável (minimizar/maximizar) usado pelas duas áreas do painel de
+// relay: "esta loja como cliente" (envio) e "esta loja como hub" (recebe).
+function CollapsibleCard({
+  title,
+  icon,
+  headerRight,
+  defaultOpen = true,
+  children,
+}: {
+  title: string
+  icon?: ReactNode
+  headerRight?: ReactNode
+  defaultOpen?: boolean
+  children: ReactNode
+}) {
+  const [open, setOpen] = useState(defaultOpen)
+  return (
+    <div className="rounded-2xl border border-border bg-card p-4">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="flex w-full items-center justify-between gap-2 text-left"
+      >
+        <div className="flex min-w-0 items-center gap-2">
+          {icon}
+          <h3 className="truncate text-sm font-bold text-foreground">{title}</h3>
+        </div>
+        <div className="flex shrink-0 items-center gap-2">
+          {headerRight}
+          {open ? (
+            <ChevronUp className="h-4 w-4 text-muted-foreground" />
+          ) : (
+            <ChevronDown className="h-4 w-4 text-muted-foreground" />
+          )}
+        </div>
+      </button>
+      {open && <div className="mt-4">{children}</div>}
     </div>
   )
 }
@@ -314,12 +368,10 @@ function ClientRelayPanel({ cfg, origin }: { cfg: ClientCfg; origin: string }) {
   const notifyOk = !!notify
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-4">
-      <div className="mb-1 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Radio className="h-4 w-4 text-primary" />
-          <h3 className="text-sm font-bold text-foreground">Esta loja como cliente do relay (Pagou.ai)</h3>
-        </div>
+    <CollapsibleCard
+      title="Esta loja como cliente do relay (Pagou.ai)"
+      icon={<Radio className="h-4 w-4 text-primary" />}
+      headerRight={
         <span
           className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
             secretOk && notifyOk ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"
@@ -327,7 +379,8 @@ function ClientRelayPanel({ cfg, origin }: { cfg: ClientCfg; origin: string }) {
         >
           {secretOk && notifyOk ? "Enviando via relay ✓" : "Relay não ativado"}
         </span>
-      </div>
+      }
+    >
       <p className="mb-3 text-[11px] text-muted-foreground">
         O relay é exclusivo da <strong className="text-foreground">Pagou.ai</strong>: ele recebe o webhook dela e repassa
         pra esta loja, escondendo o domínio real do gateway.
@@ -394,7 +447,7 @@ function ClientRelayPanel({ cfg, origin }: { cfg: ClientCfg; origin: string }) {
           {envBlock}
         </pre>
       </div>
-    </div>
+    </CollapsibleCard>
   )
 }
 
@@ -467,13 +520,8 @@ export function RelayPanel() {
       {/* ESTA loja como cliente de um relay externo (envio) — o que a v0 mostra */}
       {data?.client && <ClientRelayPanel cfg={data.client} origin={origin} />}
 
-      <div className="flex items-center gap-2 pt-1">
-        <span className="h-px flex-1 bg-border" />
-        <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-          Esta loja como hub (recebe de outras)
-        </span>
-        <span className="h-px flex-1 bg-border" />
-      </div>
+      <CollapsibleCard title="Esta loja como hub (recebe de outras)" icon={<Sparkles className="h-4 w-4 text-primary" />}>
+      <div className="space-y-6">
 
       {data && !data.kvOk && (
         <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
@@ -692,6 +740,8 @@ export function RelayPanel() {
           </div>
         )}
       </section>
+      </div>
+      </CollapsibleCard>
     </div>
   )
 }
