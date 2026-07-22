@@ -68,49 +68,6 @@ function clearConfirmedOrder() {
   }
 }
 
-// Google Ads — conversao de compra (conta Gold Grill)
-const GOOGLE_ADS_CONVERSION_SEND_TO = 'AW-18197200459/gyTWCO_dpbocEMv8jOVD';
-const GOOGLE_ADS_CONVERSION_STORAGE_KEY = 'fio-nobre-google-ads-conversions-v1';
-
-declare global {
-  interface Window {
-    dataLayer?: unknown[];
-    gtag?: (...args: unknown[]) => void;
-  }
-}
-
-// Dispara a conversao SO quando o pagamento foi confirmado. Usa o transaction_id
-// (codigo do pedido) + localStorage para nunca contar a mesma venda 2x.
-function sendGoogleAdsPurchaseConversion(transactionId: string, value: number) {
-  if (typeof window === 'undefined' || !transactionId) return;
-  try {
-    const raw = window.localStorage.getItem(GOOGLE_ADS_CONVERSION_STORAGE_KEY);
-    const tracked = raw ? JSON.parse(raw) : [];
-    const trackedIds = Array.isArray(tracked) ? tracked : [];
-    if (trackedIds.includes(transactionId)) return;
-
-    if (typeof window.gtag !== 'function') {
-      window.dataLayer = window.dataLayer || [];
-      window.gtag = function gtag() {
-        window.dataLayer?.push(arguments);
-      };
-    }
-
-    window.gtag('event', 'conversion', {
-      send_to: GOOGLE_ADS_CONVERSION_SEND_TO,
-      value: Number(value.toFixed(2)),
-      currency: 'BRL',
-      transaction_id: transactionId,
-    });
-
-    window.localStorage.setItem(
-      GOOGLE_ADS_CONVERSION_STORAGE_KEY,
-      JSON.stringify([transactionId, ...trackedIds].slice(0, 50)),
-    );
-  } catch (error) {
-    console.error('[GOOGLE ADS] Falha ao enviar conversao de compra:', error);
-  }
-}
 
 type PixProof = {
   name: string;
@@ -332,7 +289,6 @@ function CheckoutContent() {
   const [paymentConfirmed, setPaymentConfirmed] = useState(false);
   const [orderCode, setOrderCode] = useState('');
   const [confirmedOrder, setConfirmedOrder] = useState<ConfirmedOrder | null>(null);
-  const purchaseConversionSentRef = useRef(false);
   // Código do pedido gerado no servidor (no /api/pix/create) e reaproveitado
   // na confirmação, para casar com o e-mail disparado pelo webhook.
   const pendingOrderCodeRef = useRef<string>('');
@@ -342,14 +298,6 @@ function CheckoutContent() {
   // O cupom (cart-context) desconta AQUI — deste valor derivam o resumo, o
   // parcelamento, a conversão do Google Ads e o valor cobrado no gateway.
   const checkoutTotal = Math.max(0, totalPrice - couponDiscount) + shippingPrice;
-
-  // Conversao de compra (Google Ads) — dispara apenas quando o pagamento foi
-  // confirmado, enviando o valor real e o id unico do pedido.
-  useEffect(() => {
-    if (!paymentConfirmed || !orderCode || purchaseConversionSentRef.current) return;
-    purchaseConversionSentRef.current = true;
-    sendGoogleAdsPurchaseConversion(orderCode, checkoutTotal);
-  }, [paymentConfirmed, orderCode, checkoutTotal]);
 
   // Mantém a ref espelhada com o estado (lida pelas armadilhas de saída).
   useEffect(() => {
