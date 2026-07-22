@@ -12,6 +12,10 @@ interface PageProps {
   params: Promise<{ slug: string }>
 }
 
+// ISR: rede de segurança pra edição do painel chegar no site mesmo se o
+// revalidatePath on-demand falhar. Sem isto a página fica estática do build.
+export const revalidate = 300
+
 export async function generateStaticParams() {
   return products.map((product) => ({
     slug: product.slug,

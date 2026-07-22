@@ -52,8 +52,11 @@ async function readOverlay(): Promise<Overlay> {
       `${URL_BASE}/mget/${encodeURIComponent(OVERRIDES_KEY)}/${encodeURIComponent(DELETED_KEY)}`,
       {
         headers: { authorization: `Bearer ${TOKEN}` },
-        cache: "force-cache",
-        next: { tags: [CATALOG_TAG] },
+        // `revalidate` (TTL) além da tag: se a invalidação por tag falhar — o que
+        // acontecia com `force-cache`, deixando o overlay congelado desde o build
+        // e as edições do painel nunca aparecendo no site — o dado expira sozinho
+        // em 60s. Teto de ~1 leitura do KV por minuto: seguro no free do Upstash.
+        next: { revalidate: 60, tags: [CATALOG_TAG] },
       },
     )
     if (!res.ok) return EMPTY
