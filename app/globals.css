@@ -201,3 +201,32 @@
 .collection-bubble-scroll::-webkit-scrollbar {
   display: none;
 }
+
+/* Imagem redimensionável/posicionável na descrição do produto (editor rico
+   do admin — ver app/admin/tiptap-resizable-image.tsx e
+   components/store/rich-description.tsx). Classes fixas (não Tailwind
+   dinâmico) porque o HTML sai salvo no banco, fora do scan do Tailwind. */
+.gg-img-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  float: none;
+}
+.gg-img-left {
+  float: left;
+  margin: 0.25rem 1rem 0.5rem 0;
+}
+.gg-img-right {
+  float: right;
+  margin: 0.25rem 0 0.5rem 1rem;
+}
+.gg-img-w-10 { width: 10%; }
+.gg-img-w-20 { width: 20%; }
+.gg-img-w-30 { width: 30%; }
+.gg-img-w-40 { width: 40%; }
+.gg-img-w-50 { width: 50%; }
+.gg-img-w-60 { width: 60%; }
+.gg-img-w-70 { width: 70%; }
+.gg-img-w-80 { width: 80%; }
+.gg-img-w-90 { width: 90%; }
+.gg-img-w-100 { width: 100%; }

@@ -3,8 +3,8 @@
 import { useRef, useState } from "react"
 import { useEditor, EditorContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
-import Image from "@tiptap/extension-image"
 import Placeholder from "@tiptap/extension-placeholder"
+import { ResizableImage } from "./tiptap-resizable-image"
 import { upload } from "@vercel/blob/client"
 import {
   Bold,
@@ -72,7 +72,7 @@ export function RichTextEditor({
       StarterKit.configure({
         link: { openOnClick: false, autolink: true },
       }),
-      Image.configure({ HTMLAttributes: { class: "rounded-lg my-2" } }),
+      ResizableImage,
       Video,
       Placeholder.configure({ placeholder: "Escreva a descrição do produto…" }),
     ],
