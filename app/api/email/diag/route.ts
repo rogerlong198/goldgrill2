@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { kvConfigured, kvSetJSON, kvGetJSON } from "@/lib/kv-store";
 import { getActiveGateway } from "@/lib/gateways/active";
+import { isAuthed } from "@/lib/admin-auth";
 
 export const dynamic = "force-dynamic";
 
@@ -84,8 +85,12 @@ export async function POST(request: Request) {
   const secret = String(body?.secret || "");
   const to = String(body?.to || "").trim();
 
+  // Aceita duas formas de auth: o cookie de sessão do admin (quando chamado de
+  // dentro do painel) OU a senha crua no corpo (página standalone /api/email/diag).
   const adminPw = (process.env.ADMIN_PASSWORD || "").trim();
-  if (!adminPw || secret !== adminPw) {
+  const authedByCookie = await isAuthed();
+  const authedBySecret = Boolean(adminPw) && secret === adminPw;
+  if (!authedByCookie && !authedBySecret) {
     return NextResponse.json({ ok: false, motivo: "Senha do admin incorreta." }, { status: 401 });
   }
 
