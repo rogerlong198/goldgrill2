@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Expand } from "lucide-react"
 
 interface ProductGalleryProps {
@@ -8,18 +8,59 @@ interface ProductGalleryProps {
   name: string
 }
 
+// Distância mínima (px) pra um arrasto contar como troca de foto — abaixo
+// disso é toque/rolagem, não swipe.
+const SWIPE_THRESHOLD = 40
+
 export function ProductGallery({ images, name }: ProductGalleryProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
+  const touchStartX = useRef<number | null>(null)
+  const touchStartY = useRef<number | null>(null)
+  const thumbStripRef = useRef<HTMLDivElement>(null)
+
+  function goTo(next: number) {
+    if (!images.length) return
+    setCurrentIndex(((next % images.length) + images.length) % images.length)
+  }
+
+  function onTouchStart(e: React.TouchEvent) {
+    touchStartX.current = e.touches[0].clientX
+    touchStartY.current = e.touches[0].clientY
+  }
+
+  function onTouchEnd(e: React.TouchEvent) {
+    if (touchStartX.current === null || touchStartY.current === null) return
+    const dx = e.changedTouches[0].clientX - touchStartX.current
+    const dy = e.changedTouches[0].clientY - touchStartY.current
+    touchStartX.current = null
+    touchStartY.current = null
+    // Só troca se o gesto foi mais horizontal que vertical — senão o usuário
+    // estava rolando a página e trocar a foto seria um efeito indesejado.
+    if (Math.abs(dx) < SWIPE_THRESHOLD || Math.abs(dx) < Math.abs(dy)) return
+    goTo(dx < 0 ? currentIndex + 1 : currentIndex - 1)
+  }
+
+  // Mantém a miniatura ativa visível na faixa quando a foto muda por swipe/seta.
+  useEffect(() => {
+    const strip = thumbStripRef.current
+    const active = strip?.children[currentIndex] as HTMLElement | undefined
+    active?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" })
+  }, [currentIndex])
 
   return (
     <div className="relative bg-[#ffffff] md:flex md:items-start md:gap-4 md:flex-row-reverse">
       {/* Main image */}
       <div className="relative aspect-square bg-[#ffffff] md:bg-[#f5f5f5] rounded-2xl md:rounded-2xl flex-1 flex items-center justify-center p-6 md:p-0 overflow-hidden group">
-        <div className="relative w-full h-full md:hidden">
+        <div
+          className="relative w-full h-full md:hidden"
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
+        >
           <img
             src={images[currentIndex]}
             alt={name}
-            className="absolute inset-0 w-full h-full object-contain rounded-2xl"
+            draggable={false}
+            className="absolute inset-0 w-full h-full object-contain rounded-2xl select-none"
           />
         </div>
         <img
@@ -80,15 +121,27 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
             <span>{images.length}</span>
           </div>
 
-          <div className="flex items-center justify-center gap-2 pb-4">
-            {images.map((_, i) => (
+          {/* Miniaturas: rolam na horizontal e trocam a foto ao toque. */}
+          <div
+            ref={thumbStripRef}
+            className="scrollbar-hide flex gap-2 overflow-x-auto px-4 pb-4"
+          >
+            {images.map((img, i) => (
               <button
                 key={i}
                 onClick={() => setCurrentIndex(i)}
-                className={`w-2 h-2 rounded-full transition-colors ${i === currentIndex ? "bg-[#1a1a1a]" : "bg-[#e5e5e5]"
-                  }`}
                 aria-label={`Imagem ${i + 1}`}
-              />
+                className={`relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border-2 transition-colors ${
+                  i === currentIndex ? "border-[#1a1a1a]" : "border-[#e5e5e5]"
+                }`}
+              >
+                <img
+                  src={img}
+                  alt={`Miniatura ${i + 1}`}
+                  draggable={false}
+                  className="h-full w-full select-none object-cover"
+                />
+              </button>
             ))}
           </div>
         </div>
