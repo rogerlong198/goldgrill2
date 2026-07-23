@@ -39,7 +39,7 @@ export async function sendOrderEmail(order: OrderEmailInput): Promise<SendOrderE
     return { ok: false, error: "Servidor de e-mail não configurado.", status: 500 };
   }
 
-  const fromAddress = process.env.RESEND_FROM_EMAIL || "Gold Grill <suporte@goldgrill.com.br>";
+  const fromAddress = process.env.RESEND_FROM_EMAIL || "Gold Grill <atendimento-pedidos@goldgrill.shop>";
 
   try {
     const { subject, html } = renderOrderConfirmationEmail(order);
@@ -73,7 +73,7 @@ export async function sendAbandonedCartEmail(order: OrderEmailInput): Promise<Se
     console.error("[ABANDONED EMAIL] RESEND_API_KEY ausente.");
     return { ok: false, error: "Servidor de e-mail não configurado.", status: 500 };
   }
-  const fromAddress = process.env.RESEND_FROM_EMAIL || "Gold Grill <suporte@goldgrill.com.br>";
+  const fromAddress = process.env.RESEND_FROM_EMAIL || "Gold Grill <atendimento-pedidos@goldgrill.shop>";
   try {
     const { subject, html } = renderAbandonedCartEmail(order);
     const resend = new Resend(apiKey);
@@ -102,7 +102,7 @@ export async function sendShippedEmail(order: OrderEmailInput, trackingCode: str
     console.error("[SHIPPED EMAIL] RESEND_API_KEY ausente.");
     return { ok: false, error: "Servidor de e-mail não configurado.", status: 500 };
   }
-  const fromAddress = process.env.RESEND_FROM_EMAIL || "Gold Grill <suporte@goldgrill.com.br>";
+  const fromAddress = process.env.RESEND_FROM_EMAIL || "Gold Grill <atendimento-pedidos@goldgrill.shop>";
   try {
     const { subject, html } = renderShippedEmail(order, trackingCode);
     const resend = new Resend(apiKey);

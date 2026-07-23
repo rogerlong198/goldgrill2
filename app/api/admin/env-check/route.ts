@@ -55,7 +55,7 @@ export async function GET() {
       desc: "Sem isto o pedido é aprovado, mas o cliente não recebe o e-mail.",
       items: [
         { label: "Resend — API key", envs: ["RESEND_API_KEY"], set: has("RESEND_API_KEY"), level: "rec", hint: "Envia o e-mail de confirmação do pedido." },
-        { label: "Resend — remetente", envs: ["RESEND_FROM_EMAIL"], set: has("RESEND_FROM_EMAIL"), level: "rec", hint: 'Ex.: "Gold Grill <suporte@goldgrill.com.br>".' },
+        { label: "Resend — remetente", envs: ["RESEND_FROM_EMAIL"], set: has("RESEND_FROM_EMAIL"), level: "rec", hint: 'Ex.: "Gold Grill <atendimento-pedidos@goldgrill.shop>".' },
       ],
     },
     {

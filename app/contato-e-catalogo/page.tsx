@@ -39,10 +39,10 @@ export default function ContatoECatalogoPage() {
                 Para pedidos, trocas, dúvidas gerais e solicitação de catálogo.
               </p>
               <a
-                href="mailto:atentimentos-pedidos@goldgrill.shop"
+                href="mailto:atendimento-pedidos@goldgrill.shop"
                 className="mt-2 inline-block text-sm font-medium text-[#b98a2e] underline"
               >
-                atentimentos-pedidos@goldgrill.shop
+                atendimento-pedidos@goldgrill.shop
               </a>
               <p className="mt-1 text-xs text-[#b0b0b0]">Respondemos em até 24h úteis</p>
             </div>
@@ -77,8 +77,8 @@ export default function ContatoECatalogoPage() {
           <h2 className="text-base font-bold text-[#1a1a1a]">Solicitar Catálogo Completo</h2>
           <p className="mt-2 text-sm leading-7 text-[#525252]">
             Quer conhecer toda a nossa linha de produtos? Envie um e-mail para{" "}
-            <a href="mailto:atentimentos-pedidos@goldgrill.shop" className="text-[#b98a2e] underline">
-              atentimentos-pedidos@goldgrill.shop
+            <a href="mailto:atendimento-pedidos@goldgrill.shop" className="text-[#b98a2e] underline">
+              atendimento-pedidos@goldgrill.shop
             </a>{" "}
             com o assunto <strong>"Solicitar Catálogo"</strong> e nossa equipe enviará o PDF completo
             com todas as coleções, referências e tabela de preços para revenda.
@@ -99,8 +99,8 @@ export default function ContatoECatalogoPage() {
             <p><strong className="text-[#1a1a1a]">Endereço:</strong> Rua Santa Cruz, 2187 — Caixa Postal 11433, Sala 09 — Vila Mariana — São Paulo/SP — CEP 04.121-002</p>
             <p>
               <strong className="text-[#1a1a1a]">E-mail:</strong>{" "}
-              <a href="mailto:atentimentos-pedidos@goldgrill.shop" className="text-[#b98a2e] underline">
-                atentimentos-pedidos@goldgrill.shop
+              <a href="mailto:atendimento-pedidos@goldgrill.shop" className="text-[#b98a2e] underline">
+                atendimento-pedidos@goldgrill.shop
               </a>
             </p>
           </div>

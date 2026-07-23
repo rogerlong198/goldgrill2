@@ -81,8 +81,8 @@ export default function TermosDeUsoPage() {
             <h2 className="text-base font-bold text-[#1a1a1a]">8. Trocas e Devoluções</h2>
             <p className="mt-2">
               Aceitamos trocas em caso de produto com defeito de fabricação, divergência com o produto anunciado ou avaria no transporte. O prazo para comunicar a solicitação é de até 30 dias após o recebimento. Para iniciar o processo, entre em contato pelo e-mail{" "}
-              <a href="mailto:atentimentos-pedidos@goldgrill.shop" className="text-[#b98a2e] underline">
-                atentimentos-pedidos@goldgrill.shop
+              <a href="mailto:atendimento-pedidos@goldgrill.shop" className="text-[#b98a2e] underline">
+                atendimento-pedidos@goldgrill.shop
               </a>.
             </p>
           </div>
@@ -112,8 +112,8 @@ export default function TermosDeUsoPage() {
             <h2 className="text-base font-bold text-[#1a1a1a]">12. Contato</h2>
             <p className="mt-2">
               Dúvidas sobre estes Termos de Uso? Entre em contato conosco:{" "}
-              <a href="mailto:atentimentos-pedidos@goldgrill.shop" className="text-[#b98a2e] underline">
-                atentimentos-pedidos@goldgrill.shop
+              <a href="mailto:atendimento-pedidos@goldgrill.shop" className="text-[#b98a2e] underline">
+                atendimento-pedidos@goldgrill.shop
               </a>
             </p>
           </div>
@@ -124,8 +124,8 @@ export default function TermosDeUsoPage() {
               <strong className="text-[#1a1a1a]">CNPJ:</strong> 66.889.994/0001-57<br />
               <strong className="text-[#1a1a1a]">Sede:</strong> Rua Santa Cruz, 2187 — Caixa Postal 11433, Sala 09 — Vila Mariana — São Paulo/SP — CEP 04.121-002<br />
               <strong className="text-[#1a1a1a]">E-mail:</strong>{" "}
-              <a href="mailto:atentimentos-pedidos@goldgrill.shop" className="text-[#b98a2e] underline">
-                atentimentos-pedidos@goldgrill.shop
+              <a href="mailto:atendimento-pedidos@goldgrill.shop" className="text-[#b98a2e] underline">
+                atendimento-pedidos@goldgrill.shop
               </a>
             </p>
           </div>

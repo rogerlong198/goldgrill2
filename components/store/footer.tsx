@@ -86,11 +86,11 @@ export function Footer() {
           Contato e Catálogo
         </Link>
         <a
-          href="mailto:atentimentos-pedidos@goldgrill.shop"
+          href="mailto:atendimento-pedidos@goldgrill.shop"
           className="text-sm text-[#737373] hover:text-[#1a1a1a] transition-colors inline-flex items-center gap-2"
         >
           <Mail size={14} />
-          atentimentos-pedidos@goldgrill.shop
+          atendimento-pedidos@goldgrill.shop
         </a>
       </FooterAccordion>
 

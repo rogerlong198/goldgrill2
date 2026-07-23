@@ -45,7 +45,7 @@ export default function TrocasEDevolucoesPage() {
               Como solicitar
             </h2>
             <p className="mt-2">
-              Envie uma mensagem para atentimentos-pedidos@goldgrill.shop com o número do
+              Envie uma mensagem para atendimento-pedidos@goldgrill.shop com o número do
               pedido, nome completo, motivo da solicitação e fotos do produto, se
               houver defeito ou avaria.
             </p>

@@ -32,8 +32,8 @@ export default function PoliticaDePrivacidadePage() {
             </p>
             <p className="mt-2">
               Contato do encarregado de dados (DPO):{" "}
-              <a href="mailto:atentimentos-pedidos@goldgrill.shop" className="text-[#b98a2e] underline">
-                atentimentos-pedidos@goldgrill.shop
+              <a href="mailto:atendimento-pedidos@goldgrill.shop" className="text-[#b98a2e] underline">
+                atendimento-pedidos@goldgrill.shop
               </a>
             </p>
           </div>
@@ -107,8 +107,8 @@ export default function PoliticaDePrivacidadePage() {
             </ul>
             <p className="mt-2">
               Para exercer qualquer um desses direitos, entre em contato pelo e-mail{" "}
-              <a href="mailto:atentimentos-pedidos@goldgrill.shop" className="text-[#b98a2e] underline">
-                atentimentos-pedidos@goldgrill.shop
+              <a href="mailto:atendimento-pedidos@goldgrill.shop" className="text-[#b98a2e] underline">
+                atendimento-pedidos@goldgrill.shop
               </a>.
             </p>
           </div>
@@ -132,7 +132,7 @@ export default function PoliticaDePrivacidadePage() {
               <strong className="text-[#1a1a1a]">Responsável pelo tratamento de dados:</strong><br />
               NOVA ERA COMERCIAL LTDA — CNPJ 66.889.994/0001-57<br />
               Rua Santa Cruz, 2187 — Caixa Postal 11433, Sala 09 — Vila Mariana — São Paulo/SP — CEP 04.121-002<br />
-              atentimentos-pedidos@goldgrill.shop
+              atendimento-pedidos@goldgrill.shop
             </p>
           </div>
 
